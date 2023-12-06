@@ -21,5 +21,4 @@ fn setup(mut cmd:Commands,game_state:Res<GameState>,mut windows: Query<&mut Wind
     let mut window=windows.single_mut();
     window.resolution.set(WINDOW_INIT_WIDTH, WINDOW_INIT_HEIGHT);
     cmd.spawn(Camera2dBundle::default());
-    
 }
