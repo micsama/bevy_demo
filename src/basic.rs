@@ -39,7 +39,7 @@ impl GameState{
             }else{ arr.push(false)}
         }
         Self{
-            paused:true,
+            paused:false,
             row_count,
             density,
             circles:0,
@@ -50,7 +50,7 @@ impl GameState{
 
 impl Default for GameState{
     fn default() -> Self {
-        Self::new(3,10)
+        Self::new(5,990)
     }
 }
 
@@ -64,8 +64,8 @@ pub struct  CellSet;
 
 pub const ACTIVE_COLOR:Color=Color::rgb(0.2, 0.3, 1.);
 pub const INIT_COLOR:Color=Color::rgb(0.2, 0.2, 0.2);
-pub const UI_HEIGHT:f32 = 40.;
-pub const WINDOW_INIT_HEIGHT:f32=700.;
-pub const WINDOW_INIT_WIDTH:f32=1000.;
+pub const UI_HEIGHT:f32 = 10.;
+pub const WINDOW_INIT_HEIGHT:f32=1000.;
+pub const WINDOW_INIT_WIDTH:f32=1800.;
 
 
