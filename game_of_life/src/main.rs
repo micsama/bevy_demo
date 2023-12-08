@@ -1,5 +1,8 @@
 pub mod basic;
+pub mod ui;
+use ui::*;
 use bevy::diagnostic::LogDiagnosticsPlugin;
+use bevy_editor_pls::prelude::*;
 use basic::*;
 use bevy::prelude::*;
 use bevy_egui::EguiPlugin;
@@ -8,12 +11,13 @@ fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .add_plugins(EguiPlugin)
+        .add_plugins(EditorPlugin::default())
         .add_plugins(LogDiagnosticsPlugin::default())
         .insert_resource(LifeTimer(Timer::from_seconds(0.2, TimerMode::Repeating)))
         .init_resource::<GameState>()
         .init_resource::<UiState>()
         .add_systems(Startup, (setup, setup_cells))
-        .add_systems(Update, (draw_cells, upadte_cells_status))
+        .add_systems(Update, (draw_cells, upadte_cells_status,handle_ui_events))
         .run();
 }
 
@@ -173,3 +177,6 @@ fn upadte_cells_status(
         game_state.circles += 1;
     }
 }
+
+
+
