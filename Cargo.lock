@@ -1952,6 +1952,12 @@ dependencies = [
 [[package]]
 name = "game_of_life"
 version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_editor_pls",
+ "bevy_egui",
+ "rand",
+]
 
 [[package]]
 name = "gethostname"
@@ -2588,12 +2594,6 @@ dependencies = [
 [[package]]
 name = "mygame"
 version = "0.1.0"
-dependencies = [
- "bevy",
- "bevy_editor_pls",
- "bevy_egui",
- "rand",
-]
 
 [[package]]
 name = "naga"
@@ -3436,6 +3436,12 @@ dependencies = [
 [[package]]
 name = "snake"
 version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_editor_pls",
+ "bevy_egui",
+ "rand",
+]
 
 [[package]]
 name = "spirv"
