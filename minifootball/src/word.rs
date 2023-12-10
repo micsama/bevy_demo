@@ -1,9 +1,10 @@
+extern crate minifootball;
+use minifootball::*;
 use bevy::{
     audio::{PlaybackMode, Volume, VolumeLevel},
     prelude::*,
 };
 use bevy_rapier2d::{parry::transformation::utils::transform, prelude::*};
-
 pub struct WordPlugin;
 impl Plugin for WordPlugin {
     fn build(&self, app: &mut App) {
@@ -74,24 +75,4 @@ fn setup_word(
 
 fn setup_physics(mut commands: Commands, mut windows: Query<&mut Window>) {
     windows.single_mut().resolution.set(900., 900.);
-}
-
-fn get_circle_points(m: f32, n: f32, r: f32, n_points: usize) -> Vec<Vec2> {
-    let mut points: Vec<Vec2> = (0..n_points)
-        .map(|i| {
-            // 将角度转换为弧度
-            let angle = 2.0 * std::f32::consts::PI * (i as f32) / (n_points as f32);
-            // 计算圆周上的点
-            Vec2 {
-                x: m + r * angle.cos(),
-                y: n + r * angle.sin(),
-            }
-        })
-        .collect();
-
-    // 为了闭合圆，将第一个点再添加到末尾
-    if let Some(first_point) = points.first().cloned() {
-        points.push(first_point);
-    }
-    points
 }
