@@ -26,24 +26,38 @@ use bevy::math::Vec2;
 /// }
 /// ```
 pub fn get_circle_points(m: f32, n: f32, r: f32, n_points: usize) -> Vec<Vec2> {
-    let mut points: Vec<Vec2> = (0..n_points).map(|i| {
-        // 将迭代索引转换为弧度角。
-        // 角度与圆周上的位置成比例。
-        let angle = 2.0 * std::f32::consts::PI * (i as f32) / (n_points as f32);
+    let mut points: Vec<Vec2> = (0..n_points)
+        .map(|i| {
+            // 将迭代索引转换为弧度角。
+            // 角度与圆周上的位置成比例。
+            let angle = 2.0 * std::f32::consts::PI * (i as f32) / (n_points as f32);
 
-        // 使用角度和半径计算圆上点的 x 和 y 坐标，
-        // 圆心位于 (m, n)。
-        Vec2 {
-            x: m + r * angle.cos(), // x 坐标
-            y: n + r * angle.sin(), // y 坐标
-        }
-    }).collect();
+            // 使用角度和半径计算圆上点的 x 和 y 坐标，
+            // 圆心位于 (m, n)。
+            Vec2 {
+                x: m + r * angle.cos(), // x 坐标
+                y: n + r * angle.sin(), // y 坐标
+            }
+        })
+        .collect();
 
     // 在向量末尾添加第一个点以闭合圆。
     if let Some(first_point) = points.first().cloned() {
         points.push(first_point);
     }
-
     points
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn it_adds_two() {
+        let circle_points = get_circle_points(0.0, 0.0, 300.0, 3);
+        print!("-----\n");
+        for point in circle_points {
+            println!("Point: ({}, {})", point.x, point.y);
+        }
+        // assert_eq!(result, 4);
+    }
+}

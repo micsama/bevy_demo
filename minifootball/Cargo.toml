@@ -13,5 +13,3 @@ bevy_egui = "0.23"
 bevy_rapier2d = "0.23"
 rand = "0.8"
 
-[dev.dependencies]
-bevy = {version="0.12",features = ["dynamic_linking","wav"]}
