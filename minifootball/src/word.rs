@@ -34,7 +34,10 @@ fn setup_word(
     res: Res<WordAssets>,
 ) {
     // 添加摄像头以及设置重力
-    commands.spawn(Camera2dBundle::default());
+    commands.spawn(Camera2dBundle{
+        // transform:Transform { translation: Vec3{ x: 30., y: 70., z:-40.},..default() },
+        ..default()
+    });
     rcfg.gravity = Vec2::new(0., 0.);
     // 设置背景图片以及bgm
     commands.spawn(AudioBundle {

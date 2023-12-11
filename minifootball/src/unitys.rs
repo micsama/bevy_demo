@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use bevy_editor_pls::prelude::*;
 use bevy_rapier2d::prelude::*;
 pub struct UnitysPlugin;
 impl Plugin for UnitysPlugin {
@@ -11,16 +10,18 @@ impl Plugin for UnitysPlugin {
 
 #[derive(Resource)]
 struct WordAssets {
-    assets_1: Vec<String>,
+    assets_1: Vec<(String, Vec2)>, // 使用元组来存储配对的 assets 和 points
     assets_2: Vec<String>,
 }
 impl Default for WordAssets {
     fn default() -> Self {
+        const X_OFFSET: f32 = 3.0;
+        const Y_OFFSET: f32 = -10.0;
         WordAssets {
             assets_1: vec![
-                "img/bugs/a1.png".to_string(),
-                "img/bugs/b1.png".to_string(),
-                "img/bugs/c1.png".to_string(),
+                ("img/bugs/a1.png".to_string(), Vec2 { x: 0. + X_OFFSET, y: -300. + Y_OFFSET }),
+                ("img/bugs/b1.png".to_string(), Vec2 { x: 251. + X_OFFSET, y: 150. + Y_OFFSET }),
+                ("img/bugs/c1.png".to_string(), Vec2 { x: -256. + X_OFFSET, y: 145. + Y_OFFSET }),
             ],
             assets_2: vec![
                 "img/bugs/a2.png".to_string(),
@@ -31,30 +32,21 @@ impl Default for WordAssets {
     }
 }
 
-fn spawn_player_node(mut cmd: Commands, server: Res<AssetServer>, res: ResMut<WordAssets>) {
-    const POINTS: [Vec2; 3] = [
-        Vec2 { x: 300.0, y: 0.0 },
-        Vec2 {
-            x: -150.00002,
-            y: 259.80762,
-        },
-        Vec2 {
-            x: -149.99997,
-            y: -259.80765,
-        },
-    ];
 
-    cmd.spawn(SpriteBundle {
-        transform: Transform {
-            translation: Vec3::new(0., 300., 1.),
+fn spawn_player_node(mut cmd: Commands, server: Res<AssetServer>, word_assets: Res<WordAssets>) {
+    for (asset, point) in &word_assets.assets_1 {
+        cmd.spawn(SpriteBundle {
+            transform: Transform {
+                translation: Vec3::new(point.x, point.y, 1.),
+                ..default()
+            },
+            sprite: Sprite {
+                custom_size: Some(Vec2 { x: 35., y: 35. }),
+                ..default()
+            },
+            texture: server.load(asset.clone()),
             ..default()
-        },
-        sprite: Sprite {
-            custom_size: Some(Vec2 { x: 35., y: 35. }),
-            ..default()
-        },
-        texture: server.load(res.assets_1[0].clone()),
-        ..default()
-    })
-    .insert(Collider::ball(15.));
+        })
+        .insert(Collider::ball(15.));
+    }
 }
