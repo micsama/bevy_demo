@@ -10,7 +10,7 @@ edition = "2021"
 opt-level = 3
 
 [profile.dev]
-opt-level = 1
+opt-level = 0
 
 # Enable high optimizations for dependencies (incl. Bevy), but not for our code:
 [profile.dev.package."*"]
