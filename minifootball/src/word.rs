@@ -1,5 +1,5 @@
 extern crate minifootball;
-use bevy::{audio::PlaybackMode, prelude::*};
+use bevy::{audio::{PlaybackMode, Volume, VolumeLevel}, prelude::*};
 use bevy_rapier2d::prelude::*;
 use minifootball::*;
 pub struct WordPlugin;
@@ -33,6 +33,7 @@ fn setup_word(
     mut rcfg: ResMut<RapierConfiguration>,
     res: Res<WordAssets>,
 ) {
+
     // 添加摄像头以及设置重力
     commands.spawn(Camera2dBundle{
         // transform:Transform { translation: Vec3{ x: 30., y: 70., z:-40.},..default() },
@@ -43,12 +44,12 @@ fn setup_word(
     commands.spawn(AudioBundle {
         source: res.bgm.clone(),
         settings: PlaybackSettings {
+            volume:Volume::Relative(VolumeLevel::new(0.8)),
             mode: PlaybackMode::Loop,
             ..default()
         },
     });
 
-    //背景图片
     commands.spawn(SpriteBundle {
         sprite: Sprite {
             custom_size: Some(Vec2 { x: 900., y: 900. }),
@@ -58,23 +59,23 @@ fn setup_word(
         ..default()
     });
 
+
     //测试的小球
-    commands
-        .spawn(RigidBody::Dynamic)
-        .insert(Collider::ball(10.))
-        .insert(Restitution::coefficient(1.))
-        .insert(TransformBundle::from(Transform::from_xyz(200.0, 200.0, 0.0)));
+    // commands
+    //     .spawn(RigidBody::Dynamic)
+    //     .insert(Collider::ball(10.))
+    //     .insert(Restitution::coefficient(1.))
+    //     .insert(TransformBundle::from(Transform::from_xyz(200.0, 200.0, 0.0)));
 
     //场地的基础碰撞
     commands.spawn(Collider::polyline(
         get_circle_points(3., -25., 400., 20),
         None,
     ));
-    // commands.spawn(Collider::ball(400.))
-    //     // .insert(TransformBundle::from(Transform::from_xyz(0.0, -100.0, 0.0)));
-    //     .insert(TransformBundle::from(Transform::from_xyz(3.0, -23.0, 0.0)));
 }
 
-fn setup_physics( mut windows: Query<&mut Window>) {
+fn setup_physics( mut windows: Query<&mut Window>, mut audio:ResMut<GlobalVolume>) {
+    //设置全局音量
+    audio.volume=VolumeLevel::new(0.8);
     windows.single_mut().resolution.set(900., 900.);
 }

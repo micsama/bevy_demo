@@ -1,23 +1,24 @@
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
+
 pub struct UnitysPlugin;
 impl Plugin for UnitysPlugin {
     fn build(&self, app: &mut App) {
-        app.insert_resource(WordAssets::default())
+        app.insert_resource(UnitAssets::default())
             .add_systems(Startup, spawn_player_node);
     }
 }
 
-#[derive(Resource)]
-struct WordAssets {
-    assets_1: Vec<(String, Vec2)>, // 使用元组来存储配对的 assets 和 points
-    assets_2: Vec<String>,
+#[derive(Resource,Clone)]
+pub struct UnitAssets {
+    pub assets_1: Vec<(String, Vec2)>, // 使用元组来存储配对的 assets 和 points
+    pub assets_2: Vec<String>,
 }
-impl Default for WordAssets {
+impl Default for UnitAssets {
     fn default() -> Self {
         const X_OFFSET: f32 = 3.0;
         const Y_OFFSET: f32 = -10.0;
-        WordAssets {
+        UnitAssets {
             assets_1: vec![
                 ("img/bugs/a1.png".to_string(), Vec2 { x: 0. + X_OFFSET, y: -300. + Y_OFFSET }),
                 ("img/bugs/b1.png".to_string(), Vec2 { x: 251. + X_OFFSET, y: 150. + Y_OFFSET }),
@@ -33,9 +34,10 @@ impl Default for WordAssets {
 }
 
 
-fn spawn_player_node(mut cmd: Commands, server: Res<AssetServer>, word_assets: Res<WordAssets>) {
+fn spawn_player_node(mut cmd: Commands, server: Res<AssetServer>, word_assets: Res<UnitAssets>) {
     for (asset, point) in &word_assets.assets_1 {
         cmd.spawn(SpriteBundle {
+            
             transform: Transform {
                 translation: Vec3::new(point.x, point.y, 1.),
                 ..default()
@@ -50,3 +52,5 @@ fn spawn_player_node(mut cmd: Commands, server: Res<AssetServer>, word_assets: R
         .insert(Collider::ball(15.));
     }
 }
+
+
