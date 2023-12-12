@@ -12,7 +12,6 @@ impl Plugin for InputPluginM {
 
 fn mouse(
     mut commands: Commands,
-    q_windows: Query<&Window, With<PrimaryWindow>>,
     server: Res<AssetServer>,
     assets: Res<UnitAssets>,
     mouse: Res<Input<MouseButton>>,
