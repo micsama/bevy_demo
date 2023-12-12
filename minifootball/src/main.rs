@@ -10,8 +10,8 @@ use unitys::*;
 fn main() {
     App::new()
     .add_plugins(DefaultPlugins)
+    .add_plugins( RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(100.))
     .add_plugins(EditorPlugin::default())
-    .add_plugins(RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(200.0))
     .add_plugins(RapierDebugRenderPlugin::default())
     .add_systems(Update, bevy::window::close_on_esc)
     .add_plugins((WordPlugin,UnitysPlugin,InputPluginM))

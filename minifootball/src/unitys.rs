@@ -37,7 +37,6 @@ impl Default for UnitAssets {
 fn spawn_player_node(mut cmd: Commands, server: Res<AssetServer>, word_assets: Res<UnitAssets>) {
     for (asset, point) in &word_assets.assets_1 {
         cmd.spawn(SpriteBundle {
-            
             transform: Transform {
                 translation: Vec3::new(point.x, point.y, 1.),
                 ..default()
@@ -49,7 +48,8 @@ fn spawn_player_node(mut cmd: Commands, server: Res<AssetServer>, word_assets: R
             texture: server.load(asset.clone()),
             ..default()
         })
-        .insert(Collider::ball(15.));
+        .insert(Collider::ball(15.))
+        .insert(RigidBody::Dynamic);
     }
 }
 

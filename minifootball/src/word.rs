@@ -2,12 +2,15 @@ extern crate minifootball;
 use bevy::{audio::{PlaybackMode, Volume, VolumeLevel}, prelude::*};
 use bevy_rapier2d::prelude::*;
 use minifootball::*;
+
 pub struct WordPlugin;
 impl Plugin for WordPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, (setup_physics, load_word_assets))
             .insert_resource(WordAssets::default())
-            .add_systems(Startup, setup_word.after(load_word_assets));
+            .insert_resource(MyWorldCoords::default())
+            .add_systems(Startup, setup_word.after(load_word_assets))
+            .add_systems(Update, my_cursor_system);
     }
 }
 
@@ -35,11 +38,8 @@ fn setup_word(
 ) {
 
     // 添加摄像头以及设置重力
-    commands.spawn(Camera2dBundle{
-        // transform:Transform { translation: Vec3{ x: 30., y: 70., z:-40.},..default() },
-        ..default()
-    });
-    rcfg.gravity = Vec2::new(0., 0.);
+    commands.spawn((Camera2dBundle::default(), MainCamera));
+    rcfg.gravity = Vec2::new(0., -160.);
     // 设置背景图片以及bgm
     commands.spawn(AudioBundle {
         source: res.bgm.clone(),
@@ -49,6 +49,7 @@ fn setup_word(
             ..default()
         },
     });
+
 
     commands.spawn(SpriteBundle {
         sprite: Sprite {
