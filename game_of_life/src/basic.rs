@@ -10,17 +10,19 @@ pub struct  GameState{
     pub density: usize, // 1~9 设置为随机产生细胞分布的概率
     pub circles: i32 ,//细胞存活周期数
     pub active_cells:Vec<bool>,
+    pub reborn:f32,//设置死细胞复活的概率
 }
 //ui状态
 #[derive(Resource)]
 pub struct  UiState{
     pub row_count_input:f32,
     pub density_input:f32,
+    pub reborn_input:f32,
 }
 
 impl Default for UiState{
     fn default() -> Self {
-        Self { row_count_input: 10., density_input: 3. }
+        Self { row_count_input: 10., density_input: 3. ,reborn_input:0.}
     }
 }
 
@@ -44,6 +46,7 @@ impl GameState{
             density,
             circles:0,
             active_cells:arr,
+            reborn:0.002,
         }
     }
 }
@@ -67,5 +70,3 @@ pub const INIT_COLOR:Color=Color::rgb(0.2, 0.2, 0.2);
 pub const UI_HEIGHT:f32 = 20.;
 pub const WINDOW_INIT_HEIGHT:f32=800.;
 pub const WINDOW_INIT_WIDTH:f32=1200.;
-
-

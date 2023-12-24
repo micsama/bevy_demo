@@ -1,5 +1,5 @@
 use crate::unitys::*;
-use bevy::{prelude::*, window::PrimaryWindow};
+use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
 use minifootball::*;
 

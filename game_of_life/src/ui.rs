@@ -1,6 +1,6 @@
 use crate::{basic::*, setup_cells};
 use bevy::prelude::*;
-use bevy_egui::{egui, EguiContext, EguiContexts};
+use bevy_egui::{egui,EguiContexts};
 
 //重制按钮的方案
 fn handle_reset_btn(gs: &mut ResMut<GameState>, ui_state: ResMut<UiState>) {
@@ -10,6 +10,7 @@ fn handle_reset_btn(gs: &mut ResMut<GameState>, ui_state: ResMut<UiState>) {
     gs.active_cells = new_state.active_cells;
     gs.circles = new_state.circles;
     gs.paused = true;
+    gs.reborn=ui_state.reborn_input;
 }
 
 /*处理开始游戏的按钮
@@ -27,7 +28,6 @@ pub fn handle_ui_events(
     mut cmd: Commands,
     mut windows: Query<&mut Window>,
 ) {
-    let window = windows.single_mut();
     egui::TopBottomPanel::top("游戏控制器")
         .resizable(false)
         .min_height(UI_HEIGHT)
@@ -42,6 +42,9 @@ pub fn handle_ui_events(
                         ui.add(
                             egui::Slider::new(&mut ui_state.row_count_input, 10.0..=100.)
                                 .step_by(10.),
+                        );
+                        ui.label("reborn");
+                        ui.add(egui::Slider::new(&mut ui_state.reborn_input,0.0..=0.5).step_by(0.001)
                         );
                         //控制初始化时随机生成细胞的密度0～9
                         ui.label("density:");

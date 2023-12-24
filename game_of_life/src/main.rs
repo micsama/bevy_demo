@@ -1,11 +1,13 @@
 pub mod basic;
 pub mod ui;
-use ui::*;
-use bevy::diagnostic::LogDiagnosticsPlugin;
-use bevy_editor_pls::prelude::*;
 use basic::*;
+use bevy::diagnostic::LogDiagnosticsPlugin;
+use bevy::ecs::schedule::IntoSystemConfigs;
 use bevy::prelude::*;
+use bevy_editor_pls::prelude::*;
 use bevy_egui::EguiPlugin;
+use rand::Rng;
+use ui::*;
 
 fn main() {
     App::new()
@@ -17,7 +19,8 @@ fn main() {
         .init_resource::<GameState>()
         .init_resource::<UiState>()
         .add_systems(Startup, (setup, setup_cells))
-        .add_systems(Update, (draw_cells, upadte_cells_status,handle_ui_events))
+        .add_systems(Update, (draw_cells, upadte_cells_status, handle_ui_events))
+        // .add_systems(Update, reborn_cells.after(upadte_cells_status))
         .run();
 }
 
@@ -93,6 +96,9 @@ fn draw_cells(mut q: Query<(&CellId, &mut Sprite), With<CellId>>, game_state: Re
     }
 }
 
+
+
+
 /////////////--------systems--------////////////////
 
 /**
@@ -114,6 +120,8 @@ fn draw_cells(mut q: Query<(&CellId, &mut Sprite), With<CellId>>, game_state: Re
  * ooo -> oxo
  * xoo    xoo
  */
+
+
 fn upadte_cells_status(
     time: Res<Time>,
     mut timer: ResMut<LifeTimer>,
@@ -175,8 +183,17 @@ fn upadte_cells_status(
         }
         game_state.active_cells = next_circl;
         game_state.circles += 1;
+    reborn_cells(game_state);
     }
 }
 
-
-
+fn reborn_cells(mut game_state:ResMut<GameState>) {
+    let reborn_rate=game_state.reborn;
+    for i in game_state.active_cells.iter_mut() {
+        // println!("{}", i);
+        let mut rng = rand::thread_rng(); 
+        if rng.gen::<f32>() < reborn_rate {
+            *i = true;
+        }
+    }
+}

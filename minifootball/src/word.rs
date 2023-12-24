@@ -39,12 +39,12 @@ fn setup_word(
 
     // 添加摄像头以及设置重力
     commands.spawn((Camera2dBundle::default(), MainCamera));
-    rcfg.gravity = Vec2::new(0., -160.);
+    rcfg.gravity = Vec2::new(0., 0.);
     // 设置背景图片以及bgm
     commands.spawn(AudioBundle {
         source: res.bgm.clone(),
         settings: PlaybackSettings {
-            volume:Volume::Relative(VolumeLevel::new(0.8)),
+            volume:Volume::Relative(VolumeLevel::new(0.1)),
             mode: PlaybackMode::Loop,
             ..default()
         },
